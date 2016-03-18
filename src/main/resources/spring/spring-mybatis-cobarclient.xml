@@ -1,0 +1,168 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+        http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-4.2.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.2.xsd" default-lazy-init="false">
+    <!--<description>Spring database configuration</description>-->
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>application.properties</value>
+        </property>
+    </bean>
+    <!-- data sources start -->
+    <bean id="tenants_master_dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close" >
+        <property name="url" value="${tenants.master.url}"/>
+        <property name="username" value="${tenants.master.username}"/>
+        <property name="password" value="${tenants.master.password}"/>
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="filters" value="config,stat,mergeStat"/>
+        <property name="maxActive" value="${tenants.master.maxActive}"/>
+        <property name="initialSize" value="${tenants.master.initialSize}"/>
+        <property name="maxWait" value="${tenants.master.maxWait}"/>
+        <property name="minIdle" value="${tenants.master.minIdle}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="3000"/>
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="${tenants.master.maxPoolPreparedStatementPerConnectionSize}"/>
+    </bean>
+
+    <bean id="tenants_slave1_dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${tenants.slave1.url}"/>
+        <property name="username" value="${tenants.slave1.username}"/>
+        <property name="password" value="${tenants.slave1.password}"/>
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="filters" value="config,stat,mergeStat"/>
+        <property name="maxActive" value="${tenants.slave1.maxActive}"/>
+        <property name="initialSize" value="${tenants.slave1.initialSize}"/>
+        <property name="maxWait" value="${tenants.slave1.maxWait}"/>
+        <property name="minIdle" value="${tenants.slave1.minIdle}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="3000"/>
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="${tenants.slave1.maxPoolPreparedStatementPerConnectionSize}"/>
+    </bean>
+
+    <bean id="documents_master_dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${documents.master.url}"/>
+        <property name="username" value="${documents.master.username}"/>
+        <property name="password" value="${documents.master.password}"/>
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="filters" value="config,stat,mergeStat"/>
+        <property name="maxActive" value="${documents.master.maxActive}"/>
+        <property name="initialSize" value="${documents.master.initialSize}"/>
+        <property name="maxWait" value="${documents.master.maxWait}"/>
+        <property name="minIdle" value="${documents.master.minIdle}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="3000"/>
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="${documents.master.maxPoolPreparedStatementPerConnectionSize}"/>
+    </bean>
+
+    <bean id="documents_slave1_dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${documents.slave1.url}"/>
+        <property name="username" value="${documents.slave1.username}"/>
+        <property name="password" value="${documents.slave1.password}"/>
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="filters" value="config,stat,mergeStat"/>
+        <property name="maxActive" value="${documents.slave1.maxActive}"/>
+        <property name="initialSize" value="${documents.slave1.initialSize}"/>
+        <property name="maxWait" value="${documents.slave1.maxWait}"/>
+        <property name="minIdle" value="${documents.slave1.minIdle}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="3000"/>
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize"
+                  value="${documents.slave1.maxPoolPreparedStatementPerConnectionSize}"/>
+    </bean>
+
+    <util:set id="shardSet" set-class="java.util.LinkedHashSet">
+        <ref bean="tenants_master"/>
+        <ref bean="tenants_slave1"/>
+        <ref bean="documents_slave1"/>
+        <ref bean="documents_master"/>
+    </util:set>
+
+    <bean id="tenants_master" class="com.alibaba.cobarclient.Shard">
+        <property name="id" value="tenants_master"/>
+        <property name="dataSource" ref="tenants_master_dataSource"/>
+    </bean>
+    <bean id="tenants_slave1" class="com.alibaba.cobarclient.Shard">
+        <property name="id" value="tenants_slave1"/>
+        <property name="dataSource" ref="tenants_slave1_dataSource"/>
+    </bean>
+    <bean id="documents_master" class="com.alibaba.cobarclient.Shard">
+        <property name="id" value="documents_master"/>
+        <property name="dataSource" ref="documents_master_dataSource"/>
+    </bean>
+    <bean id="documents_slave1" class="com.alibaba.cobarclient.Shard">
+        <property name="id" value="documents_slave1"/>
+        <property name="dataSource" ref="documents_slave1_dataSource"/>
+    </bean>
+    <!-- data sources end -->
+
+    <bean id="router" class="com.alibaba.cobarclient.config.SimpleRouterFactoryBean">
+        <property name="configLocations">
+            <list>
+                <value>classpath:/dbrule/sharding-rules-on-namespace.xml</value>
+            </list>
+        </property>
+        <property name="shards" ref="shardSet"/>
+    </bean>
+    <!--mybatis扫描指定的接口包-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.bwts.dao"/>
+    </bean>
+    <!--因为使用mybatis的一样都是纯注解形式的,喜欢xml配置的话推荐使用ibatis-->
+    <bean id="sqlSession" class="com.raycloud.cobarclient.mybatis.spring.MySqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+        <property name="router" ref="router"/>
+        <property name="shards" ref="shardSet"/>
+    </bean>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--默认数据源,没有找到路由规则的时候向这个库读写数据-->
+        <property name="dataSource" ref="tenants_master_dataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath*:sqlmapper/*.xml"/>
+    </bean>
+
+
+    <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <bean id="txManager"
+          class="com.alibaba.cobarclient.transaction.MyBestEffortMultiDataSourceTransactionManager">
+        <property name="shards" ref="shardSet"/>
+        <property name="transactionSynchronization" value="2"/>
+    </bean>
+
+
+
+
+</beans>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bwts.dao.DocumentsMapper">
+
+    <resultMap id="documentsMap1" type="DocumentModel">
+        <id column="id" property="invoiceId"/>
+        <result column="invoice_number" property="invoiceNumber"/>
+        <result column="invoice_type" property="invoiceType"/>
+    </resultMap>
+
+    <select id="getDocumentById" parameterType="long" resultMap="documentsMap1">
+        select * from documents where id =#{invoiceId}
+    </select>
+
+</mapper>
